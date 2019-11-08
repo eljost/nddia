@@ -38,7 +38,7 @@ def plot(ndres):
     return fig
 
 
-def nddia_lif():
+def test_lif():
     energies = np.loadtxt("07_foreach_sym.energies")
     ens = energies - energies.min()
     ens *= 27.2114

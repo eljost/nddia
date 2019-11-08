@@ -1,4 +1,4 @@
-# nddiabatization
+# nddia
 
 > Direct diabatization based on nonadiabaticcouplings: the N/D method
 
