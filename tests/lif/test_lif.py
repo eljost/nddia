@@ -1,13 +1,12 @@
-#!/usr/bin/env python3
-
 import matplotlib.pyplot as plt
 import numpy as np
 
+from nddia.constants import AU2EV
 from nddia.parser import parse_molcas_couplings
 from nddia.main import diabatize
 
 
-def plot(ndres):
+def plot(ndres, show=False):
     xs = ndres.xs
 
     fig, (ax0, ax1, ax2, ax3) = plt.subplots(nrows=4, sharex=True)
@@ -34,14 +33,15 @@ def plot(ndres):
     ax3.set_xlabel("Li-F / Å")
 
     fig.tight_layout()
-    plt.show()
+    if show:
+        plt.show()
     return fig
 
 
 def test_lif():
     energies = np.loadtxt("07_foreach_sym.energies")
     ens = energies - energies.min()
-    ens *= 27.2114
+    ens *= AU2EV
 
     fn = "07_foreach_sym.out"
     with open(fn) as handle:
@@ -50,13 +50,13 @@ def test_lif():
 
     w = np.ones(couplings.shape[1])
     step = 0.1
-    xs = 0.8 + np.arange(len(couplings))*step
+    xs = 0.8 + np.arange(len(couplings)) * step
     nd_kwargs = {
         "couplings": couplings,
         "energies": energies,
         "atom_weights": w,
         "state_weights": 1,
-        "epsilon": 160 / 2.,
+        "epsilon": 160 / 2.0,
         "fthresh": 0,
         "step": step,
         "xs": xs,
@@ -64,7 +64,3 @@ def test_lif():
     ndres = diabatize(**nd_kwargs)
     fig = plot(ndres)
     fig.savefig("lif_nddia.pdf")
-
-
-if __name__ == "__main__":
-    nddia_lif()
